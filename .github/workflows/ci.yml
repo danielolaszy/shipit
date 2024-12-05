@@ -6,6 +6,7 @@ on:
       - main
 
 jobs:
+  
   golangci:
     name: lint
     runs-on: ubuntu-latest
@@ -19,3 +20,9 @@ jobs:
         with:
           version: v1.60
 
+  conventional-commits:
+    name: Conventional Commits
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: webiny/action-conventional-commits@v1.3.0
