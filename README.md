@@ -1,59 +1,71 @@
-# ShipIt 🚀
+[![ShipIt](assets/logo.gif)]()
 
-**ShipIt** is a CI/CD-driven pet project focused on practicing DevOps methodologies.  
-From structured logging to containerization, we're shipping code with confidence.
+**ShipIt** is a hands-on exploration of modern DevOps practices.
+By focusing on containerized deployments, CI/CD pipelines, and infrastructure automation, **ShipIt** aims to help developers confidently ship high-quality code while learning and applying real-world workflows.
+Whether you're a DevOps beginner or looking to hone your skills, **ShipIt** is here to inspire, teach, and help you ship it faster, safer, smarter. 🚀
 
-## Key Features:
+## Key Features
 
-- **Health Checks**: Validate system readiness.
-- **CI/CD Pipelines**: Automated testing and deployments using GitHub Actions.
-- **Dockerized Builds**: Lightweight, containerized application delivery.
-- **Infrastructure as Code**: Provisioning AWS infrastructure with Terraform.
+- **Health Checks**: Simple `/health` endpoint to verify application readiness.
+- **CI/CD Pipelines**: Automated workflows using GitHub Actions for linting, testing, and Docker builds.
+- **Dockerized Builds**: Consistent, containerized deployments for seamless development and production parity.
+- **Infrastructure as Code**: AWS infrastructure provisioned using Terraform, enabling repeatable and scalable setups.
 
-### Why "ShipIt"? 
+## Tools & Technologies Used
 
-Because every developer loves the feeling of confidently shipping great code! 🚀
+**ShipIt** leverages a variety of modern tools and practices to simulate a real-world DevOps workflow:
 
+- **[Go](https://go.dev/)**: The programming language powering the application, designed for simplicity and efficiency.
+- **[Docker](https://www.docker.com/)**: Containerization for consistent application builds and deployments.
+- **[Terraform](https://www.terraform.io/)**: Infrastructure as Code (IaC) tool for managing and provisioning infrastructure resources.
+- **[GitHub Actions](https://github.com/features/actions)**: CI/CD workflows to automate linting, testing, building, and deploying.
+- **[AWS EC2](https://aws.amazon.com/ec2/)**: Compute instances used for hosting and running the application.
+- **Docker Registry**: A repository for storing and managing Docker images, ensuring efficient containerized application distribution.
 
-## Installation
+## Getting Started
 
-1. Clone the repository:
+Follow these steps to set up and run the project:
 
-```zsh
+### Clone the repository
+
+```bash
 git clone https://github.com/danielolaszy/ShipIt.git
+cd ShipIt
 ```
 
-2. Install dependencies:
+### Install dependencies
 
-```zsh
+Ensure you have Go installed, then run:
+
+```bash
 go mod tidy
 ```
 
-3. Build Docker image:
+### Build Docker image
 
-```zsh
+Build a containerized version of the app:
+
+```bash
 docker build -t shipit .
 ```
 
-4. Run the Docker container:
+### Run the Docker container
 
-```zsh
+Launch the application:
+
+```bash
 docker run -p 8080:8080 shipit
 ```
 
-5. Visit `http://localhost:8080/health` to check the health status.
+### Test the Application
 
-## Usage
+Access the /health endpoint in your browser or via curl:
 
-The app exposes a simple `/health` endpoint.
-
-Example request:
-
-```zsh
+```bash
 curl http://localhost:8080/health
 ```
 
-Example response:
+Expected response:
 
 ```json
 {
