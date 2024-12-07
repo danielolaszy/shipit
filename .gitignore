@@ -1,0 +1,23 @@
+# Ignore files for editor/IDE-specific configurations
+.vscode/
+.idea/
+*.swp
+
+# Crash logs (generated if Terraform crashes unexpectedly)
+crash.log
+
+# Ignore override files used for local changes
+*.tfvars
+*.tfvars.json
+
+# Ignore plan files (can be large and not needed in version control)
+*.tfplan
+
+# State files (contain sensitive information like resource IDs and secrets)
+terraform.tfstate
+terraform.tfstate.backup
+
+# Local Terraform directories and files
+.terraform/
+.terraform.tfstate.lock.info
+.terraform.tfvars
