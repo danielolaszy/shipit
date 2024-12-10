@@ -45,6 +45,18 @@ jobs:
       - name: Run unit tests
         run: go test ./... -v -cover
 
+  gosec:
+    name: Gosec Security Scanning
+    runs-on: ubuntu-latest
+    env:
+      GO111MODULE: on
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+
+      - name: Run Gosec Security Scanner
+        uses: securego/gosec@master
+
   docker-build: # Creating a temporary Docker image for build validation
     name: Build Validation
     runs-on: ubuntu-latest
