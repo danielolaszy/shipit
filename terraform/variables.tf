@@ -1,7 +1,7 @@
 variable "aws_region" {
   description = "AWS region to deploy resources"
   type        = string
-  default     = "eu-north-1"
+  default     = "eu-west-2" # London
 }
 
 # Free tier:
@@ -18,11 +18,12 @@ variable "instance_type" {
 variable "ami_id" {
   description = "Amazon Machine Image (AMI) ID that contains the software configuration (operating system (OS), application server, and applications) required to launch your instance"
   type        = string
-  default     = "ami-05edb7c94b324f73c" # Amazon Linux 2023 in eu-north-1
+  default     = "ami-0abb41dc69b6b6704" # Amazon Linux 2023 in eu-west-2
 }
 
 variable "instance_name" {
   description = "Name for instance"
   type        = string
-  default     = "ShipIt"
+  default     = "shipit"
 }
+
