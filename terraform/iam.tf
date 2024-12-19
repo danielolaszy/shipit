@@ -1,6 +1,6 @@
 # Create the IAM Role
 resource "aws_iam_role" "ec2_role" {
-  name               = "EC2Role"
+  name = "EC2Role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -16,7 +16,7 @@ resource "aws_iam_role" "ec2_role" {
 }
 
 resource "aws_iam_role" "github_actions_role" {
-  name = "GitHubActionsECRRole"
+  name        = "GitHubActionsECRRole"
   description = "This IAM role allows GitHub Actions to authenticate with ECR"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -32,7 +32,7 @@ resource "aws_iam_role" "github_actions_role" {
             "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
           }
           StringLike = {
-            "token.actions.githubusercontent.com:sub" = "repo:${var.github_user}/${var.github_repository}:*"
+            "token.actions.githubusercontent.com:sub" = "repo:${var.github_owner}/${var.github_repository}:*"
           }
         }
       }
@@ -47,8 +47,8 @@ resource "aws_iam_policy" "ecr_policy" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect   = "Allow"
-        Action   = [
+        Effect = "Allow"
+        Action = [
           "ecr:GetAuthorizationToken",
           "ecr:BatchCheckLayerAvailability",
           "ecr:GetDownloadUrlForLayer",
@@ -57,14 +57,14 @@ resource "aws_iam_policy" "ecr_policy" {
         Resource = "*"
       },
       {
-        "Effect": "Allow",
-        "Action": [
+        "Effect" : "Allow",
+        "Action" : [
           "ecr:InitiateLayerUpload",
           "ecr:UploadLayerPart",
           "ecr:CompleteLayerUpload",
           "ecr:PutImage"
         ],
-        "Resource": "arn:aws:ecr:${var.aws_region}:${var.aws_account_id}:repository/${var.aws_ecr_repository_name}"
+        "Resource" : "arn:aws:ecr:${var.aws_region}:${var.aws_account_id}:repository/${var.aws_ecr_repository_name}"
       }
     ]
   })
@@ -85,3 +85,4 @@ resource "aws_iam_role_policy_attachment" "ecr_policy_attachment" {
   role       = aws_iam_role.github_actions_role.name
   policy_arn = aws_iam_policy.ecr_policy.arn
 }
+

@@ -1,19 +1,22 @@
 name: CD
 
-#on:
-#  push:
-#    branches:
-#      - main
-
 on:
-  pull_request:
+  push:
     branches:
       - main
 
 env:
-  CONTAINER_REPOSITORY_URL: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.eu-west-2.amazonaws.com/app/shipit
-  IMAGE_TAG: latest
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_REGION: eu-west-2
+  AWS_ECR_NAME: app/shipit
+  AWS_S3_BUCKET: my-terraform-state-store-4lfu1ej4
+  AWS_S3_BUCKET_KEY: shipit/terraform.tfstate
+  AWS_DYNAMODB_TABLE: terraform-lock-table
+  IMAGE_TAG: latest
+  GITHUB_REPOSITORY: ${{ github.event.repository.name }}
+  GITHUB_OWNER: ${{ github.repository_owner }}
+  TF_LOG: debug
 
 jobs:
 
@@ -79,24 +82,23 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHubActionsECRRole
-          aws-region: eu-west-2
+          aws-region: ${{ env.AWS_REGION }}
           audience: sts.amazonaws.com
         env:
           ACTIONS_STEP_DEBUG: true
-
 
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build Docker image
-        run: docker build -t app/shipit .
+        run: docker build -t ${{ env.AWS_ECR_NAME }} .
 
-      - name: Docker Tag image
-        run: docker tag app/shipit:latest $CONTAINER_REPOSITORY_URL:$IMAGE_TAG
+      - name: Tag Docker image
+        run: docker tag ${{ env.AWS_ECR_NAME }}:${{ env.IMAGE_TAG }} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.AWS_ECR_NAME }}:${{ env.IMAGE_TAG }}
 
       - name: Push Docker Image
-        run: docker push $CONTAINER_REPOSITORY_URL:$IMAGE_TAG
+        run: docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.AWS_ECR_NAME }}:${{ env.IMAGE_TAG }}
 
   provision-infrastructure:
     name: Provision Infrastructure
@@ -118,22 +120,14 @@ jobs:
       - name: Terraform Init
         run: |
           cd terraform
-          TF_LOG=debug terraform init
+          terraform init -var="aws_ecr_repository_name=${{ env.AWS_ECR_NAME }}" -var="aws_account_id=${{ secrets.AWS_ACCOUNT_ID }}" -var="github_owner=${{ env.GITHUB_OWNER }}" -var="github_repository=${{ env.GITHUB_REPOSITORY }}" -backend-config="bucket=${{env.AWS_S3_BUCKET}}" -backend-config="key=${{ env.AWS_S3_BUCKET_KEY }}" -backend-config="region=${{ env.AWS_REGION }}" -backend-config="dynamodb_table=${{ env.AWS_DYNAMODB_TABLE }}" 
 
       - name: Terraform Plan
         run: |
           cd terraform
-          TF_LOG=debug terraform plan
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: $AWS_REGION
+          terraform plan -out=tfplan -var="aws_ecr_repository_name=${{ env.AWS_ECR_NAME }}" -var="aws_account_id=${{ secrets.AWS_ACCOUNT_ID }}" -var="github_owner=${{ env.GITHUB_OWNER }}" -var="github_repository=${{ env.GITHUB_REPOSITORY }}" -var="aws_s3_bucket=${{ env.AWS_S3_BUCKET }}" -var="aws_dynamodb_table=${{ env.AWS_DYNAMODB_TABLE }}"
 
       - name: Terraform Apply
         run: |
           cd terraform
-          TF_LOG=debug terraform apply -auto-approve
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: $AWS_REGION
+          terraform apply -auto-approve -var="aws_ecr_repository_name=${{ env.AWS_ECR_NAME }}" -var="aws_account_id=${{ secrets.AWS_ACCOUNT_ID }}" -var="github_owner=${{ env.GITHUB_OWNER }}" -var="github_repository=${{ env.GITHUB_REPOSITORY }}" -var="aws_s3_bucket=${{ env.AWS_S3_BUCKET }}" -var="aws_dynamodb_table=${{ env.AWS_DYNAMODB_TABLE }}" tfplan
