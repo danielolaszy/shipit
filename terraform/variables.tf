@@ -42,6 +42,16 @@ variable "aws_ecr_repository_name" {
   default     = "my-ecr"
 }
 
+variable "aws_s3_bucket" {
+  description = "The name of the S3 bucket to store the Terraform state file. This bucket should already exist and be configured for state storage."
+  type        = string
+}
+
+variable "aws_dynamodb_table" {
+  description = "The name of the DynamoDB table used for Terraform state locking and consistency. This table should already exist and be configured for state locking."
+  type        = string
+}
+
 # GitHub Variables
 
 variable "github_owner" {
