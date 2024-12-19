@@ -1,7 +1,12 @@
 name: CD
 
+#on:
+#  push:
+#    branches:
+#      - main
+
 on:
-  push:
+  pull_request:
     branches:
       - main
 
@@ -15,6 +20,7 @@ jobs:
   golangci:
     name: Linting
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
@@ -28,7 +34,7 @@ jobs:
   unit-tests:
     name: Unit Tests
     runs-on: ubuntu-latest
-    needs: golangci
+
     steps:
       - uses: actions/checkout@v4
 
@@ -58,12 +64,13 @@ jobs:
   docker-build-push:
     name: Build and Push Docker Image
     runs-on: ubuntu-latest
+    needs: provision-infrastructure
 
     permissions:
       id-token: write   # Required for OIDC
       contents: read
 
-    needs: unit-tests
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -71,8 +78,12 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/custom-trust-policy
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHubActionsECRRole
           aws-region: eu-west-2
+          audience: sts.amazonaws.com
+        env:
+          ACTIONS_STEP_DEBUG: true
+
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -90,7 +101,11 @@ jobs:
   provision-infrastructure:
     name: Provision Infrastructure
     runs-on: ubuntu-latest
-    needs: docker-build-push
+    needs:
+      - unit-tests
+      - gosec
+      - golangci
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -122,7 +137,3 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: $AWS_REGION
-
-
-
-
