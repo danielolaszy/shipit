@@ -1,6 +1,6 @@
 resource "aws_vpc" "shipit_vpc" {
-  cidr_block = "10.0.0.0/16"  # Define the CIDR block for the VPC
-  enable_dns_support = true
+  cidr_block           = "10.0.0.0/16" # Define the CIDR block for the VPC
+  enable_dns_support   = true
   enable_dns_hostnames = true
 
   tags = {
@@ -9,9 +9,9 @@ resource "aws_vpc" "shipit_vpc" {
 }
 
 resource "aws_subnet" "shipit_subnet" {
-  vpc_id     = aws_vpc.shipit_vpc.id
-  cidr_block = "10.0.1.0/24"
-  availability_zone = "${var.aws_region}${var.aws_availabilty_zone}"
+  vpc_id            = aws_vpc.shipit_vpc.id
+  cidr_block        = "10.0.1.0/24"
+  availability_zone = "${var.aws_region}${var.aws_availability_zone}"
 
   map_public_ip_on_launch = true
 
@@ -50,7 +50,7 @@ resource "aws_route_table_association" "shipit_subnet_association" {
 resource "aws_security_group" "shipit_security_group" {
   name        = "${var.github_repository}-security-group"
   description = "Allow inbound traffic"
-  vpc_id      =  aws_vpc.shipit_vpc.id
+  vpc_id      = aws_vpc.shipit_vpc.id
 
   ingress {
     description = "Allow SSH from any IP address"
