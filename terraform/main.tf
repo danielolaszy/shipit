@@ -20,7 +20,6 @@ resource "aws_instance" "shipit" {
 
   associate_public_ip_address = true
 
-  # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html
   user_data = var.cloudinit_script
 
   tags = {

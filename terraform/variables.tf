@@ -31,15 +31,15 @@ variable "aws_ami_id" {
 }
 
 variable "aws_instance_name" {
-  description = "A human-readable name for the EC2 instance. Used for easy identification in the AWS Console. Default is 'shipit'."
+  description = "A human-readable name for the EC2 instance. Used for easy identification in the AWS Console."
   type        = string
-  default     = "my-aws-instance"
+  default     = "my-ec2-instance"
 }
 
 variable "aws_ecr_repository_name" {
   description = "The name of the ECR repository where Docker images will be stored."
   type        = string
-  default     = "my-ecr"
+  default     = "my-ecr-repository"
 }
 
 variable "aws_s3_bucket" {
@@ -66,6 +66,7 @@ variable "github_repository" {
   nullable    = false
 }
 
+# https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html
 variable "cloudinit_script" {
   description = "The cloud-init script used when booting up the EC2 instance in order to install Docker."
   type        = string
