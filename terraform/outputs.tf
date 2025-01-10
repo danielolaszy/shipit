@@ -20,3 +20,7 @@ output "subnet_id" {
 output "security_group_id" {
   value = aws_security_group.shipit_security_group.id
 }
+
+output "ecr_repository_url" {
+  value = aws_ecr_repository.main.repository_url
+}
