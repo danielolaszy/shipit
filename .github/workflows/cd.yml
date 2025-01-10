@@ -120,14 +120,37 @@ jobs:
       - name: Terraform Init
         run: |
           cd terraform
-          terraform init -var="aws_ecr_repository_name=${{ env.AWS_ECR_NAME }}" -var="aws_account_id=${{ secrets.AWS_ACCOUNT_ID }}" -var="github_owner=${{ env.GITHUB_OWNER }}" -var="github_repository=${{ env.GITHUB_REPOSITORY }}" -backend-config="bucket=${{env.AWS_S3_BUCKET}}" -backend-config="key=${{ env.AWS_S3_BUCKET_KEY }}" -backend-config="region=${{ env.AWS_REGION }}" -backend-config="dynamodb_table=${{ env.AWS_DYNAMODB_TABLE }}" 
+          terraform init \
+          -var="aws_account_id=${{ secrets.AWS_ACCOUNT_ID }}" \
+          -var="github_owner=${{ env.GITHUB_OWNER }}" \
+          -var="github_repository=${{ env.GITHUB_REPOSITORY }}" \
+          -var="aws_ecr_repository_name=${{ env.AWS_ECR_NAME }}" \
+          -backend-config="bucket=${{env.AWS_S3_BUCKET}}" \
+          -backend-config="key=${{env.AWS_S3_BUCKET_KEY}}" \
+          -backend-config="region=${{ env.AWS_REGION }}" \
+          -backend-config="dynamodb_table=${{ env.AWS_DYNAMODB_TABLE }}" 
 
       - name: Terraform Plan
         run: |
           cd terraform
-          terraform plan -out=tfplan -var="aws_ecr_repository_name=${{ env.AWS_ECR_NAME }}" -var="aws_account_id=${{ secrets.AWS_ACCOUNT_ID }}" -var="github_owner=${{ env.GITHUB_OWNER }}" -var="github_repository=${{ env.GITHUB_REPOSITORY }}" -var="aws_s3_bucket=${{ env.AWS_S3_BUCKET }}" -var="aws_dynamodb_table=${{ env.AWS_DYNAMODB_TABLE }}"
+          terraform plan \
+          -var="aws_account_id=${{ secrets.AWS_ACCOUNT_ID }}" \
+          -var="github_owner=${{ env.GITHUB_OWNER }}" \
+          -var="github_repository=${{ env.GITHUB_REPOSITORY }}" \
+          -var="aws_ecr_repository_name=${{ env.AWS_ECR_NAME }}" \
+          -var="aws_s3_bucket=${{ env.AWS_S3_BUCKET }}" \
+          -var="aws_dynamodb_table=${{ env.AWS_DYNAMODB_TABLE }}" \
+          -out=tfplan 
 
       - name: Terraform Apply
         run: |
           cd terraform
-          terraform apply -auto-approve -var="aws_ecr_repository_name=${{ env.AWS_ECR_NAME }}" -var="aws_account_id=${{ secrets.AWS_ACCOUNT_ID }}" -var="github_owner=${{ env.GITHUB_OWNER }}" -var="github_repository=${{ env.GITHUB_REPOSITORY }}" -var="aws_s3_bucket=${{ env.AWS_S3_BUCKET }}" -var="aws_dynamodb_table=${{ env.AWS_DYNAMODB_TABLE }}" tfplan
+          terraform apply \
+          -var="aws_account_id=${{ secrets.AWS_ACCOUNT_ID }}" \
+          -var="github_owner=${{ env.GITHUB_OWNER }}" \
+          -var="github_repository=${{ env.GITHUB_REPOSITORY }}" \
+          -var="aws_ecr_repository_name=${{ env.AWS_ECR_NAME }}" \
+          -var="aws_s3_bucket=${{ env.AWS_S3_BUCKET }}" \
+          -var="aws_dynamodb_table=${{ env.AWS_DYNAMODB_TABLE }}" \
+          -auto-approve \
+          tfplan
