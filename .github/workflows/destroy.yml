@@ -26,14 +26,18 @@ jobs:
 #          cli_config_credentials_token: ${{ secrets.TF_CLI_CONFIG_TOKEN }}
 
       - name: Terraform Init
-        run: terraform init \
+        run: |
+          cd terraform
+          terraform init \
           -backend-config="bucket=${{env.AWS_S3_BUCKET}}" \
           -backend-config="key=${{env.AWS_S3_BUCKET_KEY}}" \
           -backend-config="region=${{ env.AWS_REGION }}" \
           -backend-config="dynamodb_table=${{ env.AWS_DYNAMODB_TABLE }}"
 
       - name: Terraform Destroy
-        run: terraform destroy -auto-approve
+        run: |
+          cd terraform
+          terraform destroy -auto-approve
 #          -var="aws_account_id=${{ secrets.AWS_ACCOUNT_ID }}" \
 #          -var="github_owner=${{ secrets.GITHUB_OWNER }}" \
 #          -var="github_repository=${{ secrets.GITHUB_REPOSITORY }}" \
