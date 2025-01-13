@@ -15,6 +15,7 @@ jobs:
       AWS_S3_BUCKET: my-terraform-state-store-4lfu1ej4
       AWS_S3_BUCKET_KEY: ${{ github.event.repository.name }}/terraform.tfstate
       AWS_DYNAMODB_TABLE: terraform-lock-table
+      TF_LOG: debug
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -38,8 +39,8 @@ jobs:
         run: |
           cd terraform
           terraform destroy -auto-approve
-#          -var="aws_account_id=${{ secrets.AWS_ACCOUNT_ID }}" \
-#          -var="github_owner=${{ secrets.GITHUB_OWNER }}" \
-#          -var="github_repository=${{ secrets.GITHUB_REPOSITORY }}" \
-#          -var="aws_s3_bucket=${{ secrets.AWS_S3_BUCKET }}" \
-#          -var="aws_dynamodb_table=${{ secrets.AWS_DYNAMODB_TABLE }}"
+          -var="aws_account_id=${{ secrets.AWS_ACCOUNT_ID }}" \
+          -var="github_owner=${{ secrets.GITHUB_OWNER }}" \
+          -var="github_repository=${{ secrets.GITHUB_REPOSITORY }}" \
+          -var="aws_s3_bucket=${{ secrets.AWS_S3_BUCKET }}" \
+          -var="aws_dynamodb_table=${{ secrets.AWS_DYNAMODB_TABLE }}"
