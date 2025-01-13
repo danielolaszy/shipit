@@ -15,7 +15,7 @@ jobs:
       AWS_S3_BUCKET: my-terraform-state-store-4lfu1ej4
       AWS_S3_BUCKET_KEY: ${{ github.event.repository.name }}/terraform.tfstate
       AWS_DYNAMODB_TABLE: terraform-lock-table
-      TF_LOG: debug
+      TF_LOG: trace
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
