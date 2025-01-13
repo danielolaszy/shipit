@@ -37,7 +37,7 @@ jobs:
       - name: Terraform Destroy
         run: |
           cd terraform
-          terraform destroy -auto-approve
+          terraform destroy -auto-approve -lock=false
 #          -var="aws_account_id=${{ secrets.AWS_ACCOUNT_ID }}" \
 #          -var="github_owner=${{ secrets.GITHUB_OWNER }}" \
 #          -var="github_repository=${{ secrets.GITHUB_REPOSITORY }}" \
