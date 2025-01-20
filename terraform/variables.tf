@@ -66,6 +66,18 @@ variable "github_repository" {
   nullable    = false
 }
 
+# Other Variables
+
+variable "image_tag" {
+  type        = string
+  default     = "latest"
+}
+
+variable "port" {
+  type        = string
+  default     = "8080"
+}
+
 # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html
 variable "cloudinit_script" {
   description = "The cloud-init script used when booting up the EC2 instance in order to install Docker."
@@ -88,8 +100,8 @@ variable "cloudinit_script" {
               aws ecr get-login-password --region eu-west-2 | sudo docker login --username AWS --password-stdin 084828564941.dkr.ecr.eu-west-2.amazonaws.com
 
               # Test Docker installation
-              sudo docker pull 084828564941.dkr.ecr.eu-west-2.amazonaws.com/app/shipit
-              sudo docker run --restart=always -d -p 8080:8080 --name shipit 084828564941.dkr.ecr.eu-west-2.amazonaws.com/app/shipit:latest
+              sudo docker pull 084828564941.dkr.ecr.eu-west-2.amazonaws.com/shipit
+              sudo docker run --restart=always -d -p 8080:8080 --name shipit 084828564941.dkr.ecr.eu-west-2.amazonaws.com/shipit:latest
               EOF
 }
 

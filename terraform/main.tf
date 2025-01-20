@@ -20,7 +20,13 @@ resource "aws_instance" "shipit" {
 
   associate_public_ip_address = true
 
-  user_data = var.cloudinit_script
+  user_data = templatefile("cloudinit.tpl", {
+    aws_account_id = var.aws_account_id
+    aws_region = var.aws_region
+    aws_ecr_repository_name = var.aws_ecr_repository_name
+    port = var.port
+    image_tag = var.image_tag
+  })
 
   tags = {
     Name = var.aws_instance_name
