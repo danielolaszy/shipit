@@ -9,7 +9,7 @@ env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_REGION: eu-west-2
-  AWS_ECR_NAME: app/${{ github.event.repository.name }}
+  AWS_ECR_NAME: ${{ github.event.repository.name }}
   AWS_S3_BUCKET: my-terraform-state-store-4lfu1ej4
   AWS_S3_BUCKET_KEY: ${{ github.event.repository.name }}/terraform.tfstate
   AWS_DYNAMODB_TABLE: terraform-lock-table
