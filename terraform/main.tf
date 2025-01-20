@@ -24,7 +24,6 @@ resource "aws_instance" "ec2" {
     aws_account_id = var.aws_account_id
     aws_region = var.aws_region
     aws_ecr_repository_name = var.aws_ecr_repository_name
-    port = var.port
     image_tag = var.image_tag
   })
 

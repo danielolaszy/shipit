@@ -16,4 +16,4 @@ aws ecr get-login-password --region ${aws_region} | sudo docker login --username
 
 # Test Docker installation
 sudo docker pull ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${aws_ecr_repository_name}
-sudo docker run --restart=always -d -p ${port}:8080 --name ${aws_ecr_repository_name} ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${aws_ecr_repository_name}:${image_tag}
+sudo docker run --restart=always -d -p 8080:8080 --name ${aws_ecr_repository_name} ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${aws_ecr_repository_name}:${image_tag}
