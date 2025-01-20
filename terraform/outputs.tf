@@ -1,11 +1,11 @@
 output "instance_id" {
   description = "ID of the EC2 instance"
-  value       = aws_instance.shipit.id
+  value       = aws_instance.ec2.id
 }
 
 output "instance_public_ip" {
   description = "Public IP of the EC2 instance"
-  value       = aws_instance.shipit.public_ip
+  value       = aws_instance.ec2.public_ip
 }
 
 # Output the VPC ID and Subnet ID for reference
@@ -22,5 +22,5 @@ output "security_group_id" {
 }
 
 output "ecr_repository_url" {
-  value = aws_ecr_repository.main.repository_url
+  value = aws_ecr_repository.ecr.repository_url
 }
