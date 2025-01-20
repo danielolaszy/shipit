@@ -11,7 +11,7 @@ provider "aws" {
   region = var.aws_region
 }
 
-resource "aws_instance" "shipit" {
+resource "aws_instance" "ec2_instance" {
   ami                  = var.aws_ami_id
   instance_type        = var.aws_instance_type
   subnet_id            = aws_subnet.shipit_subnet.id
@@ -34,7 +34,7 @@ resource "aws_instance" "shipit" {
 }
 
 
-resource "aws_ecr_repository" "main" {
+resource "aws_ecr_repository" "ecr_repository" {
   name                 = var.aws_ecr_repository_name
   image_tag_mutability = "MUTABLE"
   image_scanning_configuration {

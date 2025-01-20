@@ -16,6 +16,7 @@ env:
   IMAGE_TAG: latest
   GITHUB_REPOSITORY: ${{ github.event.repository.name }}
   GITHUB_OWNER: ${{ github.repository_owner }}
+  PORT: 8080
   TF_LOG: debug
 
 jobs:
@@ -140,6 +141,9 @@ jobs:
           -var="aws_ecr_repository_name=${{ env.AWS_ECR_NAME }}" \
           -var="aws_s3_bucket=${{ env.AWS_S3_BUCKET }}" \
           -var="aws_dynamodb_table=${{ env.AWS_DYNAMODB_TABLE }}" \
+          -var="aws_ecr_repository_name=${{ env.AWS_ECR_NAME }}" \
+          -var="port=${{ env.PORT}}" \
+          -var="image_tag=${{ env.IMAGE_TAG }}" \
           -out=tfplan
 
       - name: Terraform Apply
@@ -153,5 +157,7 @@ jobs:
           -var="aws_s3_bucket=${{ env.AWS_S3_BUCKET }}" \
           -var="aws_dynamodb_table=${{ env.AWS_DYNAMODB_TABLE }}" \
           -var="aws_ecr_repository_name=${{ env.AWS_ECR_NAME }}" \
+          -var="port=${{ env.PORT}}" \
+          -var="image_tag=${{ env.IMAGE_TAG }}" \
           -auto-approve \
           tfplan
