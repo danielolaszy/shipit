@@ -20,7 +20,7 @@ Whether you're a DevOps beginner or looking to hone your skills, **ShipIt** is h
 - **[Terraform](https://www.terraform.io/)**: Infrastructure as Code (IaC) tool for managing and provisioning infrastructure resources.
 - **[GitHub Actions](https://github.com/features/actions)**: CI/CD workflows to automate linting, testing, building, and deploying.
 - **[AWS EC2](https://aws.amazon.com/ec2/)**: Compute instances used for hosting and running the application.
-- **Docker Registry**: A repository for storing and managing Docker images, ensuring efficient containerized application distribution.
+- **[AWS ECR](https://aws.amazon.com/ecr/)**: A repository for storing and managing Docker images, ensuring efficient containerized application distribution.
 
 ## Getting Started
 
